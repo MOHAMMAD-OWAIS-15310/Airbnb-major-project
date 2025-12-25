@@ -1,5 +1,11 @@
 body{
   font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container{
+    flex: 1;
 }
 
 
@@ -74,4 +80,22 @@ body{
 .card-img-overlay:hover{
     opacity: 0.2;
     background-color: white;
+}
+
+/* show */
+.show-img{
+    height: 30vh;
+}
+
+.btns{
+    display: flex;
+}
+
+.delete-btn{
+    background-color: red !important;
+    border: none !important;
+}
+
+.delete-btn:hover{
+    background-color: rgb(182, 91, 42) !important;
 }
