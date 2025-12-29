@@ -25,6 +25,7 @@ const listingSchema= new Schema({
     ],
 });
 
+//mongoose middleware => hamne listing delete kari then uske saare reviews bhi delete ho jaye
 listingSchema.post("findOneAndDelete",async(listing)=>{
     if(listing){
         await Review.deleteMany({_id: {$in : listingSchema.reviews}});
