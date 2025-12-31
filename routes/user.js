@@ -3,6 +3,7 @@ const router=express.Router();
 const User=require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const passport=require("passport");
+const {saveRedirectUrl} =require("../middleware.js");
 
 router.get("/signup",(req,res)=>{
     // res.send("form");
@@ -16,8 +17,16 @@ router.post("/signup",wrapAsync(async(req,res)=>{
     const newUser=new User({email,username});
     const registerUser = await User.register(newUser,password);
     console.log(registerUser);
-    req.flash("success","Welcome to Wanderlust !! ");
-    res.redirect("/listings");
+
+    //user sign up hote hi we want ki login bhi ho jaye explicitly dubara login naa karna pade
+    req.login(registerUser,(err)=>{
+        if(err){
+            return next(err);
+        }   
+        req.flash("success","Welcome to Wanderlust !! ");
+        res.redirect("/listings");
+    })
+
     }
     catch(err){
         req.flash("error",err.message);
@@ -29,10 +38,30 @@ router.get("/login",(req,res)=>{
     res.render("users/login.ejs");
 });
 
-router.post("/login",passport.authenticate('local',{failureRedirect : '/login', failureFlash : true}),// authenticate nhi hua toh login par hi redirect kar jaayega
+
+router.post("/login", saveRedirectUrl , passport.authenticate('local',{failureRedirect : '/login', failureFlash : true}),// authenticate nhi hua toh login par hi redirect kar jaayega
 async (req,res)=>{ 
     req.flash("success","welcome to wanderlust you are logged in");
-    res.redirect("/listings");
+    // res.redirect("/listings");
+    // res.redirect(req.session.redirectUrl);
+    let redirectUrl = res.locals.redirectUrl || "/listings";  //if redirect url exist karta h toh us par redirect kara do and 
+                                                              //also possible ki hamne direct login par gye then /listings par jao
+    // res.redirect(res.locals.redirectUrl);
+    res.redirect(redirectUrl);
 });
+
+
+//logout
+router.get("/logout",(req,res,next)=>{
+    req.logout((err)=>{
+        if(err){
+           return next(err);
+        }
+        req.flash("success","you are logout !!");
+        res.redirect("/listings");
+    });
+});
+
+
 
 module.exports=router;
