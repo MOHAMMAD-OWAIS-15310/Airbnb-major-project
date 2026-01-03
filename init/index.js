@@ -17,6 +17,8 @@ async function main(){
 
 const initDB=async ()=>{      //initDB is a function
     await Listing.deleteMany({});
+    //adding owner prop to db directly data.js me har ek object m owner : idofowner(from users collection) kar sakte but this is better way
+    initData.data = initData.data.map((obj)=>({...obj,owner: "6953f02db9cd341705d8ab26"}));
     await Listing.insertMany(initData.data);
     console.log("data was initialized");
 };
