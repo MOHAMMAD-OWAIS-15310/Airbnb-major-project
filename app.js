@@ -1,3 +1,9 @@
+if(process.env.NODE_ENV !="production"){
+    require('dotenv').config();//jab hamari website production me nhi hai bas deployment m hai then we use dotenv
+}
+// console.log(process.env.SECRET);//we are able to use this secret bc its not in production ,upar condition true ho gyi so we are able to use dotenv
+
+
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");

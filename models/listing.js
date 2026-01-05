@@ -10,10 +10,9 @@ const listingSchema= new Schema({
     },
     description: String,
     image:{
-        type:String,
-        default: "https://i.ytimg.com/vi/HmFCMCQWbFo/maxresdefault.jpg" ,
-        set : (v)=> v==="" ? "https://i.ytimg.com/vi/HmFCMCQWbFo/maxresdefault.jpg" :v,
-    },
+        url : String,
+        filename : String,
+     },
     price: Number,
     location : String,
     country : String,
